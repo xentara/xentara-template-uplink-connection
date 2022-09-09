@@ -93,9 +93,6 @@ auto TemplateTransaction::performSendTask(const process::ExecutionContext &conte
 	// Only perform the read only if the client is connected
 	if (!_client.get().connected())
 	{
-		// Clear any pending data, so it doesn't accumulate indefinitely
-		_pendingData.clear();
-
 		return;
 	}
 

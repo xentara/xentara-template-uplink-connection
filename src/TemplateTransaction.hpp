@@ -194,9 +194,6 @@ private:
 	std::reference_wrapper<TemplateClient> _client;
 	/// @brief The records to be collected
 	std::forward_list<TemplateRecord> _records;
-	
-	/// @brief The data to be sent
-	utils::core::RawDataBlock _pendingData;
 
 	/// @brief A Xentara event that is fired when the records were successfully sent to the client
 	process::Event _sentEvent;
