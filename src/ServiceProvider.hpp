@@ -23,10 +23,10 @@ public:
 	/// @name Virtual Overrides for process::ServiceProvider
 	/// @{
 
-	auto name() const -> std::u16string_view final
+	auto name() const -> std::string_view final
 	{
 		/// @todo change class name
-		return u"TemplateUplink"sv;
+		return "TemplateUplink"sv;
 	}
 
 	auto uuid() const -> utils::core::Uuid final

@@ -34,7 +34,7 @@ private:
 	/// @brief The ID of the record in the namespace of the remote service
 	/// @todo use the appropriate type here
 	/// @todo rename the variable into something specific to the key used by the remote service, like e.g. "objectName"
-	std::u8string _remoteId;
+	std::string _remoteId;
 
 	/// @class xentara::plugins::templateUplink::TemplateRecord
 	/// @todo add more properties needed for the record, e.g. data type

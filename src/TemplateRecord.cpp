@@ -24,17 +24,17 @@ auto TemplateRecord::loadConfig(utils::json::decoder::Value &value, config::Reso
 	bool remoteIdLoaded = false;
 	for (auto && [name, value] : jsonObject)
     {
-		if (name == u8"dataPoint"sv)
+		if (name == "dataPoint"sv)
 		{
 			// Resolve the data point
 			resolver.submit<model::GenericElement>(value, std::ref(_dataPoint));
 			dataPointLoaded = true;
 		}
 		/// @todo use something specific to the key used by the remote service, like e.g. "objectName"
-		else if (name == u8"remoteId"sv)
+		else if (name == "remoteId"sv)
 		{
 			/// @todo load the remote ID using the correct type etc.
-			auto remoteId = value.asString<std::u8string>();
+			auto remoteId = value.asString<std::string>();
 
 			/// @todo perform more thorough validity check
 			if (remoteId.empty())
@@ -48,7 +48,7 @@ auto TemplateRecord::loadConfig(utils::json::decoder::Value &value, config::Reso
 			remoteIdLoaded = true;
 		}
 		/// @todo load additional configuration parameters
-		else if (name == u8"TODO"sv)
+		else if (name == "TODO"sv)
 		{
 			/// @todo parse the value correctly
 			auto todo = value.asNumber<std::uint64_t>();
@@ -85,7 +85,7 @@ auto TemplateRecord::collect(std::chrono::system_clock::time_point timeStamp, ut
 	-> void
 {
 	// Read the data
-	auto value = _valueReadHandle.read<std::u8string>();
+	auto value = _valueReadHandle.read<std::string>();
 	/// @todo read the value as a more suitable type
 	auto quality = _qualityReadHandle.read<data::Quality>();
 

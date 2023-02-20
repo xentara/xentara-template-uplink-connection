@@ -6,6 +6,7 @@
 #include <xentara/data/DataType.hpp>
 #include <xentara/data/ReadHandle.hpp>
 #include <xentara/data/WriteHandle.hpp>
+#include <xentara/memory/memoryResources.hpp>
 #include <xentara/memory/WriteSentinel.hpp>
 #include <xentara/model/Attribute.hpp>
 #include <xentara/process/ExecutionContext.hpp>
@@ -34,7 +35,7 @@ auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
 	for (auto && [name, value] : jsonObject)
     {
 		/// @todo rename member to something suitable for the specific client
-		if (name == u8"records")
+		if (name == "records")
 		{
 			// Go through all the elements
 			for (auto &&element : value.asArray())
@@ -46,7 +47,7 @@ auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
 			}
 		}
 		/// @todo load custom configuration parameters
-		else if (name == u8"TODO"sv)
+		else if (name == "TODO"sv)
 		{
 			/// @todo parse the value correctly
 			auto todo = value.asNumber<std::uint64_t>();
@@ -154,7 +155,7 @@ auto TemplateTransaction::updateState(std::chrono::system_clock::time_point time
 	sentinel.commit();
 }
 
-auto TemplateTransaction::resolveAttribute(std::u16string_view name) -> const model::Attribute *
+auto TemplateTransaction::resolveAttribute(std::string_view name) -> const model::Attribute *
 {
 	/// @todo add any additional attributes this class supports, including attributes inherited from the client
 	return model::Attribute::resolve(name,
@@ -163,9 +164,9 @@ auto TemplateTransaction::resolveAttribute(std::u16string_view name) -> const mo
 		attributes::kError);
 }
 
-auto TemplateTransaction::resolveTask(std::u16string_view name) -> std::shared_ptr<process::Task>
+auto TemplateTransaction::resolveTask(std::string_view name) -> std::shared_ptr<process::Task>
 {
-	if (name == u"send"sv)
+	if (name == "send"sv)
 	{
 		return std::shared_ptr<process::Task>(sharedFromThis(), &_sendTask);
 	}
@@ -175,14 +176,14 @@ auto TemplateTransaction::resolveTask(std::u16string_view name) -> std::shared_p
 	return nullptr;
 }
 
-auto TemplateTransaction::resolveEvent(std::u16string_view name) -> std::shared_ptr<process::Event>
+auto TemplateTransaction::resolveEvent(std::string_view name) -> std::shared_ptr<process::Event>
 {
 	// Check all the events we support
-	if (name == u"sent"sv)
+	if (name == "sent"sv)
 	{
 		return std::shared_ptr<process::Event>(sharedFromThis(), &_sentEvent);
 	}
-	else if (name == u"sendError"sv)
+	else if (name == "sendError"sv)
 	{
 		return std::shared_ptr<process::Event>(sharedFromThis(), &_sendErrorEvent);
 	}

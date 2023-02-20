@@ -5,6 +5,7 @@
 #include "TemplateTransaction.hpp"
 
 #include <xentara/data/ReadHandle.hpp>
+#include <xentara/memory/memoryResources.hpp>
 #include <xentara/memory/WriteSentinel.hpp>
 #include <xentara/model/Attribute.hpp>
 #include <xentara/plugin/SharedFactory.hpp>
@@ -40,7 +41,7 @@ auto TemplateClient::loadConfig(const ConfigIntializer &initializer,
 	for (auto && [name, value] : jsonObject)
     {
 		/// @todo load configuration parameters
-		if (name == u8"TODO"sv)
+		if (name == "TODO"sv)
 		{
 			/// @todo parse the value correctly
 			auto todo = value.asNumber<std::uint64_t>();
@@ -311,7 +312,7 @@ auto TemplateClient::createSubservice(const process::MicroserviceClass &ioClass,
 	return nullptr;
 }
 
-auto TemplateClient::resolveAttribute(std::u16string_view name) -> const model::Attribute *
+auto TemplateClient::resolveAttribute(std::string_view name) -> const model::Attribute *
 {
 	/// @todo add any additional attributes this class supports
 	return model::Attribute::resolve(name,
@@ -320,7 +321,7 @@ auto TemplateClient::resolveAttribute(std::u16string_view name) -> const model::
 		attributes::kError);
 }
 
-auto TemplateClient::resolveTask(std::u16string_view name) -> std::shared_ptr<process::Task>
+auto TemplateClient::resolveTask(std::string_view name) -> std::shared_ptr<process::Task>
 {
 	if (name == process::Task::kReconnect)
 	{
@@ -332,7 +333,7 @@ auto TemplateClient::resolveTask(std::u16string_view name) -> std::shared_ptr<pr
 	return nullptr;
 }
 
-auto TemplateClient::resolveEvent(std::u16string_view name) -> std::shared_ptr<process::Event>
+auto TemplateClient::resolveEvent(std::string_view name) -> std::shared_ptr<process::Event>
 {
 	// Check all the events we support
 	if (name == process::Event::kConnected)
