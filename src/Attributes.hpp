@@ -25,19 +25,4 @@ extern const model::Attribute kSendTime;
 /// @brief A Xentara attribute containing an error code for a client connection
 extern const model::Attribute kError;
 
-/// @namespace xentara::plugins::templateUplink::attributes
-/// @todo add any additional attributes supplied by the individual elements
-
-/// @brief The type used for error codes in kError and kWriteError
-using ErrorCode = std::uint32_t;
-
-/// @brief Generates an error code for a custom error
-auto errorCode(CustomError error) noexcept -> ErrorCode;
-
-/// @namespace xentara::plugins::templateUplink::attributes
-/// @todo add more functions for other categories of errors, e.g. error codes from a library or protocol
-
-/// @brief Generates an error code for an std::error_code
-auto errorCode(std::error_code error) noexcept -> ErrorCode;
-
 } // namespace xentara::plugins::templateUplink::attributes

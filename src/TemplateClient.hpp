@@ -188,8 +188,8 @@ private:
 		bool _connectionState { false };
 		/// @brief The last time the component was connected or disconnected
 		std::chrono::system_clock::time_point _connectionTime { std::chrono::system_clock::time_point::min() };
-		/// @brief The error code when connecting, or 0 for none.
-		attributes::ErrorCode _error { attributes::errorCode(CustomError::NotConnected) };
+		/// @brief The error code when connecting, or a default constructed std::error_code object for none.
+		std::error_code _error { CustomError::NotConnected };
 	};
 
 	/// @brief This class providing callbacks for the Xentara scheduler for the "reconnect" task

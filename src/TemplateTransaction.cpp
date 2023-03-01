@@ -149,7 +149,7 @@ auto TemplateTransaction::updateState(std::chrono::system_clock::time_point time
 	// Update the state
 	state._transactionState = !error;
 	state._sendTime = timeStamp;
-	state._error = attributes::errorCode(error);
+	state._error = error;
 
 	// Commit the data
 	sentinel.commit();
