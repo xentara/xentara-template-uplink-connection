@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.18)
 
 # TODO: rename project and add description, URL etc.
 project(xentara-template-uplink LANGUAGES CXX)
