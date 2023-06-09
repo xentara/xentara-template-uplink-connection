@@ -35,27 +35,27 @@ cmake --build . --target docs
 
 This will generate HTML documentation in the subdirectory *docs/html*.
 
-## Xentara Microservice Templates
+## Xentara Skill Element Templates
 
-*(See [Microservices](https://docs.xentara.io/xentara/xentara_microservices.html) in the [Xentara documentation](https://docs.xentara.io/xentara/))*
+*(See [Skill Elements](https://docs.xentara.io/xentara/xentara_skills.html#xentara_skill_elements) in the [Xentara documentation](https://docs.xentara.io/xentara/))*
 
 ### Client Template
 
 [src/TemplateClient.hpp](src/TemplateClient.hpp)  
 [src/TemplateClient.cpp](src/TemplateClient.cpp)
 
-The client microservice template provides template code for services that may be connected and disconnected while Xentara is running.
+The client skill element template provides template code for services that may be connected and disconnected while Xentara is running.
 For such service, Xentara will periodically try to reestablish communication to the service instance if it is disconnected.
 
 The template code has the following features:
 
 - The connection to the service instance is established during the [pre-operational stage](https://docs.xentara.io/xentara/xentara_operational_stages.html#xentara_operational_stages_pre_operational),
   and closed during the [post-operational stage](https://docs.xentara.io/xentara/xentara_operational_stages.html#xentara_operational_stages_post_operational).
-- The microservice tracks an error code for the communication with the service instance. If communication breaks down, this error code is pushed
+- The skill element tracks an error code for the communication with the service instance. If communication breaks down, this error code is pushed
   to the transactions.
-- The microservice publishes a [Xentara task](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_tasks) called *reconnect*,
+- The skill element publishes a [Xentara task](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_tasks) called *reconnect*,
   that checks the connection to the service instance, and attempts to reconnect if the communication has broken down.
-- The microservice publishes two [Xentara events](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_events) called *connected*
+- The skill element publishes two [Xentara events](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_events) called *connected*
   and *disconnected*, that are fired when the connection to the service instance is establed or lost.
 
 ### Transaction Template
@@ -63,14 +63,14 @@ The template code has the following features:
 [src/TemplateTransaction.hpp](src/TemplateTransaction.hpp)  
 [src/TemplateTransaction.cpp](src/TemplateTransaction.cpp)
 
-The transaction microservice template provides template code for transactions that send data to the service instance immediately after collecting it.
+The transaction skill element template provides template code for transactions that send data to the service instance immediately after collecting it.
 
 The template code has the following features:
 
-- The microservice publishes a [Xentara task](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_tasks) called *send*,
+- The skill element publishes a [Xentara task](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_tasks) called *send*,
   which collect a set of records and sends them to the service instance.
-- The microservice publishes [Xentara events](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_events) to signal when
+- The skill element publishes [Xentara events](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_events) to signal when
   a record batch was sent, or if a send error occurred.
-- If a communication breakdown is detected when sending the records, the client microservice is notified, and all other transactions
+- If a communication breakdown is detected when sending the records, the client element is notified, and all other transactions
   are set to the same error state.
 - No communication with the service instance is attempted if the connection is not up.
