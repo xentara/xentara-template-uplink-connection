@@ -3,7 +3,7 @@
 
 #include <xentara/process/Event.hpp>
 
-/// @brief Contains the Xentara events of the driver
+/// @brief Contains the Xentara events of the uplink
 namespace xentara::plugins::templateUplink::events
 {
 

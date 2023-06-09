@@ -3,11 +3,11 @@
 
 #include <xentara/process/Task.hpp>
 
-/// @brief Contains the Xentara tasks of the driver
+/// @brief Contains the Xentara tasks of the uplink
 namespace xentara::plugins::templateUplink::tasks
 {
 
-/// @brief A Xentara tasks used to send a transaction
+/// @brief A Xentara task used to send a transaction
 extern const process::Task::Role kSend;
 
 } // namespace xentara::plugins::templateUplink::tasks
