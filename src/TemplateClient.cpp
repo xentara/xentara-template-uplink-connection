@@ -4,12 +4,16 @@
 #include "Attributes.hpp"
 #include "TemplateTransaction.hpp"
 
+#include <xentara/config/FallbackHandler.hpp>
 #include <xentara/data/ReadHandle.hpp>
 #include <xentara/memory/memoryResources.hpp>
 #include <xentara/memory/WriteSentinel.hpp>
 #include <xentara/model/Attribute.hpp>
-#include <xentara/plugin/SharedFactory.hpp>
+#include <xentara/model/ForEachAttributeFunction.hpp>
+#include <xentara/model/ForEachEventFunction.hpp>
+#include <xentara/model/ForEachTaskFunction.hpp>
 #include <xentara/process/ExecutionContext.hpp>
+#include <xentara/skill/ElementFactory.hpp>
 #include <xentara/utils/eh/currentErrorCode.hpp>
 #include <xentara/utils/json/decoder/Errors.hpp>
 #include <xentara/utils/json/decoder/Object.hpp>
@@ -32,7 +36,7 @@ TemplateClient::Class TemplateClient::Class::_instance;
 auto TemplateClient::loadConfig(const ConfigIntializer &initializer,
 		utils::json::decoder::Object &jsonObject,
 		config::Resolver &resolver,
-		const FallbackConfigHandler &fallbackHandler) -> void
+		const config::FallbackHandler &fallbackHandler) -> void
 {
 	// Get a reference that allows us to modify our own config attributes
     auto &&configAttributes = initializer[Class::instance().configHandle()];
@@ -299,58 +303,48 @@ auto TemplateClient::handleError(std::chrono::system_clock::time_point timeStamp
 	updateState(timeStamp, error, sender);
 }
 
-auto TemplateClient::createSubservice(const process::MicroserviceClass &ioClass, plugin::SharedFactory<process::Microservice> &factory)
-	-> std::shared_ptr<process::Microservice>
+auto TemplateClient::createChildElement(const skill::Element::Class &elementClass, skill::ElementFactory &factory)
+	-> std::shared_ptr<skill::Element>
 {
-	if (&ioClass == &TemplateTransaction::Class::instance())
+	if (&elementClass == &TemplateTransaction::Class::instance())
 	{
 		return factory.makeShared<TemplateTransaction>(*this);
 	}
 
-	/// @todo add any other supported subservice types
+	/// @todo add any other supported child element types
 
 	return nullptr;
 }
 
-auto TemplateClient::resolveAttribute(std::string_view name) -> const model::Attribute *
+auto TemplateClient::forEachAttribute(const model::ForEachAttributeFunction &function) const -> bool
 {
-	/// @todo add any additional attributes this class supports
-	return model::Attribute::resolve(name,
-		attributes::kConnectionState,
-		attributes::kConnectionTime,
-		attributes::kError);
+	/// @todo handle any additional attributes this class supports
+	return
+		function(attributes::kConnectionState) ||
+		function(attributes::kConnectionTime) ||
+		function(attributes::kError);
 }
 
-auto TemplateClient::resolveTask(std::string_view name) -> std::shared_ptr<process::Task>
+auto TemplateClient::forEachEvent(const model::ForEachEventFunction &function) -> bool
 {
-	if (name == process::Task::kReconnect)
-	{
-		return std::shared_ptr<process::Task>(sharedFromThis(), &_reconnectTask);
-	}
+	// Handle all the events we support
+	return
+		function(process::Event::kConnected, sharedFromThis(&_connectedEvent)) ||
+		function(process::Event::kDisconnected, sharedFromThis(&_disconnectedEvent));
 
-	/// @todo resolve any additional tasks
-
-	return nullptr;
+	/// @todo handle any additional events this class supports
 }
 
-auto TemplateClient::resolveEvent(std::string_view name) -> std::shared_ptr<process::Event>
+auto TemplateClient::forEachTask(const model::ForEachTaskFunction &function) -> bool
 {
-	// Check all the events we support
-	if (name == process::Event::kConnected)
-	{
-		return std::shared_ptr<process::Event>(sharedFromThis(), &_connectedEvent);
-	}
-	else if (name == process::Event::kDisconnected)
-	{
-		return std::shared_ptr<process::Event>(sharedFromThis(), &_disconnectedEvent);
-	}
+	// Handle all the tasks we support
+	return
+		function(process::Task::kReconnect, sharedFromThis(&_reconnectTask));
 
-	/// @todo resolve any additional tasks
-
-	return nullptr;
+	/// @todo handle any additional tasks this class supports
 }
 
-auto TemplateClient::readHandle(const model::Attribute &attribute) const noexcept -> data::ReadHandle
+auto TemplateClient::makeReadHandle(const model::Attribute &attribute) const noexcept -> std::optional<data::ReadHandle>
 {
 	// Try our attributes
 	if (attribute == attributes::kConnectionState)
@@ -369,7 +363,7 @@ auto TemplateClient::readHandle(const model::Attribute &attribute) const noexcep
 	/// @todo add support for any additional attributes
 
 	// Nothing found
-	return data::ReadHandle::Error::Unknown;
+	return std::nullopt;
 }
 
 auto TemplateClient::realize() -> void

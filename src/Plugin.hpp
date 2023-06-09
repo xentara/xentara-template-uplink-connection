@@ -1,7 +1,7 @@
 // Copyright (c) embedded ocean GmbH
 #pragma once
 
-#include "ServiceProvider.hpp"
+#include "Skill.hpp"
 
 #include <xentara/plugin/Plugin.hpp>
 
@@ -23,17 +23,17 @@ public:
 	/// @name Virtual Overrides for plugin::Plugin
 	/// @{
 
-	auto registerObjects(Registry & registry) -> void final
+	auto registerSkills(Registry & registry) -> void final
 	{
-		// Register the service provider object.
-		registry << _serviceProvider;
+		// Register the skill class.
+		registry << _skillClass;
 	}
 	
 	/// @}
 
 private:
-	/// @brief The service provider object
-	ServiceProvider _serviceProvider;
+	/// @brief The skill class object
+	Skill::Class _skillClass;
 
 	/// @brief The global plugin object
 	static Plugin _instance;

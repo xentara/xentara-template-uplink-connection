@@ -27,7 +27,7 @@ auto TemplateRecord::loadConfig(utils::json::decoder::Value &value, config::Reso
 		if (name == "dataPoint"sv)
 		{
 			// Resolve the data point
-			resolver.submit<model::GenericElement>(value, std::ref(_dataPoint));
+			resolver.submit<model::Element>(value, std::ref(_dataPoint));
 			dataPointLoaded = true;
 		}
 		/// @todo use something specific to the key used by the remote service, like e.g. "objectName"

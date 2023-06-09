@@ -3,7 +3,7 @@
 
 #include <xentara/config/Resolver.hpp>
 #include <xentara/data/ReadHandle.hpp>
-#include <xentara/model/GenericElement.hpp>
+#include <xentara/model/Element.hpp>
 #include <xentara/utils/core/RawDataBlock.hpp>
 #include <xentara/utils/json/decoder/Value.hpp>
 
@@ -30,7 +30,7 @@ public:
 
 private:
 	/// @brief The data point
-	std::weak_ptr<const model::GenericElement> _dataPoint;
+	std::weak_ptr<const model::Element> _dataPoint;
 	/// @brief The ID of the record in the namespace of the remote service
 	/// @todo use the appropriate type here
 	/// @todo rename the variable into something specific to the key used by the remote service, like e.g. "objectName"

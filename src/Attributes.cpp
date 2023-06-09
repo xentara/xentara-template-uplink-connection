@@ -12,16 +12,16 @@ namespace xentara::plugins::templateUplink::attributes
 using namespace std::literals;
 
 /// @todo assign a unique UUID
-const model::Attribute kConnectionState { "dddddddd-dddd-dddd-dddd-dddddddddddd"_uuid, "connectionState"sv, model::Attribute::Access::ReadOnly, data::DataType::kBoolean };
+const model::Attribute kConnectionState { "deadbeef-dead-beef-dead-beefdeadbeef"_uuid, "connectionState"sv, model::Attribute::Access::ReadOnly, data::DataType::kBoolean };
 
 /// @todo assign a unique UUID
-const model::Attribute kTransactionState { "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"_uuid, "transactionState"sv, model::Attribute::Access::ReadOnly, data::DataType::kBoolean };
+const model::Attribute kTransactionState { "deadbeef-dead-beef-dead-beefdeadbeef"_uuid, "transactionState"sv, model::Attribute::Access::ReadOnly, data::DataType::kBoolean };
 
 /// @todo assign a unique UUID
-const model::Attribute kConnectionTime { "ffffffff-ffff-ffff-ffff-ffffffffffff"_uuid, "connectionTime"sv, model::Attribute::Access::ReadOnly, data::DataType::kTimeStamp };
+const model::Attribute kConnectionTime { "deadbeef-dead-beef-dead-beefdeadbeef"_uuid, "connectionTime"sv, model::Attribute::Access::ReadOnly, data::DataType::kTimeStamp };
 
 /// @todo assign a unique UUID
-const model::Attribute kSendTime { "99999999-9999-9999-9999-999999999999"_uuid, "sendTime"sv, model::Attribute::Access::ReadOnly, data::DataType::kTimeStamp };
+const model::Attribute kSendTime { "deadbeef-dead-beef-dead-beefdeadbeef"_uuid, "sendTime"sv, model::Attribute::Access::ReadOnly, data::DataType::kTimeStamp };
 
 const model::Attribute kError { model::Attribute::kError, model::Attribute::Access::ReadOnly, data::DataType::kErrorCode };
 

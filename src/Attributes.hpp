@@ -1,12 +1,7 @@
 // Copyright (c) embedded ocean GmbH
 #pragma once
 
-#include "CustomError.hpp"
-
 #include <xentara/model/Attribute.hpp>
-
-#include <cstdint>
-#include <system_error>
 
 /// @brief Contains the Xentara attributes of the uplink skill
 namespace xentara::plugins::templateUplink::attributes

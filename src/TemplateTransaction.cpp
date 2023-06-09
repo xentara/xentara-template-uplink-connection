@@ -2,13 +2,19 @@
 #include "TemplateTransaction.hpp"
 
 #include "Attributes.hpp"
+#include "Events.hpp"
+#include "Tasks.hpp"
 
+#include <xentara/config/FallbackHandler.hpp>
 #include <xentara/data/DataType.hpp>
 #include <xentara/data/ReadHandle.hpp>
 #include <xentara/data/WriteHandle.hpp>
 #include <xentara/memory/memoryResources.hpp>
 #include <xentara/memory/WriteSentinel.hpp>
 #include <xentara/model/Attribute.hpp>
+#include <xentara/model/ForEachAttributeFunction.hpp>
+#include <xentara/model/ForEachEventFunction.hpp>
+#include <xentara/model/ForEachTaskFunction.hpp>
 #include <xentara/process/ExecutionContext.hpp>
 #include <xentara/utils/json/decoder/Object.hpp>
 #include <xentara/utils/json/decoder/Errors.hpp>
@@ -26,7 +32,7 @@ TemplateTransaction::Class TemplateTransaction::Class::_instance;
 auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
 		utils::json::decoder::Object &jsonObject,
 		config::Resolver &resolver,
-		const FallbackConfigHandler &fallbackHandler) -> void
+		const config::FallbackHandler &fallbackHandler) -> void
 {
 	// Get a reference that allows us to modify our own config attributes
     auto &&configAttributes = initializer[Class::instance().configHandle()];
@@ -155,45 +161,35 @@ auto TemplateTransaction::updateState(std::chrono::system_clock::time_point time
 	sentinel.commit();
 }
 
-auto TemplateTransaction::resolveAttribute(std::string_view name) -> const model::Attribute *
+auto TemplateTransaction::forEachAttribute(const model::ForEachAttributeFunction &function) const -> bool
 {
-	/// @todo add any additional attributes this class supports, including attributes inherited from the client
-	return model::Attribute::resolve(name,
-		attributes::kTransactionState,
-		attributes::kSendTime,
-		attributes::kError);
+	/// @todo handle any additional attributes this class supports, including attributes inherited from the client
+	return
+		function(attributes::kTransactionState) ||
+		function(attributes::kSendTime) ||
+		function(attributes::kError);
 }
 
-auto TemplateTransaction::resolveTask(std::string_view name) -> std::shared_ptr<process::Task>
+auto TemplateTransaction::forEachEvent(const model::ForEachEventFunction &function) -> bool
 {
-	if (name == "send"sv)
-	{
-		return std::shared_ptr<process::Task>(sharedFromThis(), &_sendTask);
-	}
+	// Handle all the events we support
+	return
+		function(events::kSent, sharedFromThis(&_sentEvent)) ||
+		function(events::kSendError, sharedFromThis(&_sendErrorEvent));
 
-	/// @todo resolve any additional tasks
-
-	return nullptr;
+	/// @todo handle any additional events this class supports
 }
 
-auto TemplateTransaction::resolveEvent(std::string_view name) -> std::shared_ptr<process::Event>
+auto TemplateTransaction::forEachTask(const model::ForEachTaskFunction &function) -> bool
 {
-	// Check all the events we support
-	if (name == "sent"sv)
-	{
-		return std::shared_ptr<process::Event>(sharedFromThis(), &_sentEvent);
-	}
-	else if (name == "sendError"sv)
-	{
-		return std::shared_ptr<process::Event>(sharedFromThis(), &_sendErrorEvent);
-	}
+	// Handle all the tasks we support
+	return
+		function(tasks::kSend, sharedFromThis(&_sendTask));
 
-	/// @todo resolve any additional events
-
-	return nullptr;
+	/// @todo handle any additional tasks this class supports
 }
 
-auto TemplateTransaction::readHandle(const model::Attribute &attribute) const noexcept -> data::ReadHandle
+auto TemplateTransaction::makeReadHandle(const model::Attribute &attribute) const noexcept -> std::optional<data::ReadHandle>
 {
 	// Try our attributes
 	if (attribute == attributes::kTransactionState)
@@ -211,7 +207,7 @@ auto TemplateTransaction::readHandle(const model::Attribute &attribute) const no
 
 	/// @todo add support for any additional attributes, including attributes inherited from the client
 
-	return data::ReadHandle::Error::Unknown;
+	return std::nullopt;
 }
 
 auto TemplateTransaction::realize() -> void
