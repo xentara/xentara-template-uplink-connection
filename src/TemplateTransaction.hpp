@@ -185,7 +185,7 @@ private:
 	/// @todo use a more appropriate type for holding the data
 	auto collectData(std::chrono::system_clock::time_point timeStamp) -> utils::core::RawDataBlock;
 
-	/// @brief Updates the state
+	/// @brief Updates the state and sends the correct event
 	auto updateState(std::chrono::system_clock::time_point timeStamp, std::error_code error = std::error_code()) -> void;
 
 	/// @brief The client this transaction belongs to

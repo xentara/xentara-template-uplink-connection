@@ -12,6 +12,7 @@
 #include <xentara/model/ForEachAttributeFunction.hpp>
 #include <xentara/model/ForEachEventFunction.hpp>
 #include <xentara/model/ForEachTaskFunction.hpp>
+#include <xentara/process/EventList.hpp>
 #include <xentara/process/ExecutionContext.hpp>
 #include <xentara/skill/ElementFactory.hpp>
 #include <xentara/utils/eh/currentErrorCode.hpp>
@@ -159,24 +160,25 @@ auto TemplateClient::updateState(std::chrono::system_clock::time_point timeStamp
 	state._connectionState = !error;
 
 	// Update the change time, if necessary. We always need to write the change time, even if it is the same as before,
-	// because the memory resource might use swap-in.
+	// because memory resources use swap-in.
 	state._connectionTime = wasConnected != connected ? timeStamp : oldState._connectionTime;
 
 	// Update the error code
 	state._error = error;
 
-	// Commit the data before sending the events
-	sentinel.commit();
-
-	// Fire any events
+	// Collect the events to raise
+	process::StaticEventList<1> events;
 	if (!wasConnected && connected)
 	{
-		_connectedEvent.fire();
+		events.push_back(_connectedEvent);
 	}
 	else if (wasConnected && !connected)
 	{
-		_disconnectedEvent.fire();
+		events.push_back(_disconnectedEvent);
 	}
+
+	// Commit the data and raise the events
+	sentinel.commit(timeStamp, events);
 
 	// Notify all error sinks
 	for (auto &&sink : _errorSinks)

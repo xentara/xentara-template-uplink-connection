@@ -121,9 +121,6 @@ auto TemplateTransaction::send(std::chrono::system_clock::time_point timeStamp) 
 
 		// The write was successful
 		updateState(timeStamp);
-
-		// Fire the event
-		_sentEvent.fire();
 	}
 	catch (const std::exception &)
 	{
@@ -141,9 +138,6 @@ auto TemplateTransaction::handleSendError(std::chrono::system_clock::time_point 
 	updateState(timeStamp, error);
 	// Notify the client
 	_client.get().handleError(timeStamp, error, this);
-		
-	// Send the event
-	_sendErrorEvent.fire();
 }
 
 auto TemplateTransaction::updateState(std::chrono::system_clock::time_point timeStamp, std::error_code error) -> void
@@ -157,8 +151,10 @@ auto TemplateTransaction::updateState(std::chrono::system_clock::time_point time
 	state._sendTime = timeStamp;
 	state._error = error;
 
-	// Commit the data
-	sentinel.commit();
+	// Determine the correct event
+	const auto &event = error ? _sendErrorEvent : _sentEvent;
+	// Commit the data and raise the event
+	sentinel.commit(timeStamp, event);
 }
 
 auto TemplateTransaction::forEachAttribute(const model::ForEachAttributeFunction &function) const -> bool
