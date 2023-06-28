@@ -56,7 +56,7 @@ The template code has the following features:
 - The skill element publishes a [Xentara task](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_tasks) called *reconnect*,
   that checks the connection to the service instance, and attempts to reconnect if the communication has broken down.
 - The skill element publishes two [Xentara events](https://docs.xentara.io/xentara/xentara_element_members.html#xentara_events) called *connected*
-  and *disconnected*, that are fired when the connection to the service instance is establed or lost.
+  and *disconnected*, that are raised when the connection to the service instance is establed or lost.
 
 ### Transaction Template
 

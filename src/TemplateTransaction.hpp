@@ -193,9 +193,9 @@ private:
 	/// @brief The records to be collected
 	std::forward_list<TemplateRecord> _records;
 
-	/// @brief A Xentara event that is fired when the records were successfully sent to the client
+	/// @brief A Xentara event that is raised when the records were successfully sent to the client
 	process::Event _sentEvent;
-	/// @brief A Xentara event that is fired when a send error occurred
+	/// @brief A Xentara event that is raised when a send error occurred
 	process::Event _sendErrorEvent;
 
 	/// @brief The "send" task

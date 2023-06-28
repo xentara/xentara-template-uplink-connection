@@ -7,9 +7,9 @@
 namespace xentara::plugins::templateUplink::events
 {
 
-/// @brief A Xentara event that is fired when the records were successfully sent to the client
+/// @brief A Xentara event that is raised when the records were successfully sent to the client
 extern const process::Event::Role kSent;
-/// @brief A Xentara event that is fired when a send error occurred
+/// @brief A Xentara event that is raised when a send error occurred
 extern const process::Event::Role kSendError;
 
 } // namespace xentara::plugins::templateUplink::events

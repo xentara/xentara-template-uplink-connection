@@ -244,9 +244,9 @@ private:
 	/// @brief Checks whether an error is the result of a lost connection
 	static auto isConnectionError(std::error_code error) noexcept -> bool;
 
-	/// @brief A Xentara event that is fired when the connection is established
+	/// @brief A Xentara event that is raised when the connection is established
 	process::Event _connectedEvent;
-	/// @brief A Xentara event that is fired when the connection is closed or lost
+	/// @brief A Xentara event that is raised when the connection is closed or lost
 	process::Event _disconnectedEvent;
 
 	/// @brief The "reconnect" task
