@@ -20,7 +20,7 @@ class TemplateRecord final
 {
 public:
 	/// @brief Loads the record from a JSON value
-	auto loadConfig(utils::json::decoder::Value &value, config::Resolver &resolver) -> void;
+	auto load(utils::json::decoder::Value &value, config::Resolver &resolver) -> void;
 
 	/// @brief Collects the data from the record and appends it to a data block
 	auto collect(std::chrono::system_clock::time_point timeStamp, utils::core::RawDataBlock &data) const -> void;

@@ -27,16 +27,10 @@ namespace xentara::plugins::templateUplink
 	
 using namespace std::literals;
 
-TemplateTransaction::Class TemplateTransaction::Class::_instance;
-
-auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
-		utils::json::decoder::Object &jsonObject,
-		config::Resolver &resolver,
-		const config::FallbackHandler &fallbackHandler) -> void
+auto TemplateTransaction::load(utils::json::decoder::Object &jsonObject,
+	config::Resolver &resolver,
+	const config::FallbackHandler &fallbackHandler) -> void
 {
-	// Get a reference that allows us to modify our own config attributes
-    auto &&configAttributes = initializer[Class::instance().configHandle()];
-
 	// Go through all the members of the JSON object that represents this object
 	for (auto && [name, value] : jsonObject)
     {
@@ -49,7 +43,7 @@ auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
 				// Add a record
 				_records.emplace_front();
 				// Load it
-				_records.front().loadConfig(element, resolver);
+				_records.front().load(element, resolver);
 			}
 		}
 		/// @todo load custom configuration parameters
@@ -65,7 +59,7 @@ auto TemplateTransaction::loadConfig(const ConfigIntializer &initializer,
 				utils::json::decoder::throwWithLocation(value, std::runtime_error("TODO is wrong with TODO parameter of template transaction"));
 			}
 
-			/// @todo set the appropriate member variables, and update configAttributes accordingly (if necessary) 
+			/// @todo set the appropriate member variables
 		}
 		else
 		{

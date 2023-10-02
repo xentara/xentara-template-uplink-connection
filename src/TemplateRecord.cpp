@@ -14,7 +14,7 @@ namespace xentara::plugins::templateUplink
 	
 using namespace std::literals;
 
-auto TemplateRecord::loadConfig(utils::json::decoder::Value &value, config::Resolver &resolver) -> void
+auto TemplateRecord::load(utils::json::decoder::Value &value, config::Resolver &resolver) -> void
 {
 	// Interpret the value as an object
 	auto jsonObject = value.asObject();
@@ -60,7 +60,7 @@ auto TemplateRecord::loadConfig(utils::json::decoder::Value &value, config::Reso
 				utils::json::decoder::throwWithLocation(value, std::runtime_error("TODO is wrong with TODO parameter of template transaction record"));
 			}
 
-			/// @todo set the appropriate member variables, and update configAttributes accordingly (if necessary) 
+			/// @todo set the appropriate member variables
 		}
 		else
 		{
