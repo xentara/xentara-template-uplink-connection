@@ -67,16 +67,6 @@ public:
 	
 	/// @}
 
-protected:
-	/// @name Virtual Overrides for skill::Element
-	/// @{
-
-	auto load(utils::json::decoder::Object &jsonObject,
-		config::Resolver &resolver,
-		const config::FallbackHandler &fallbackHandler) -> void final;
-	
-	/// @}
-
 private:
 	/// @brief This structure represents the current state of the transaction
 	struct State final
@@ -146,6 +136,13 @@ private:
 
 	/// @brief Updates the state and sends the correct event
 	auto updateState(std::chrono::system_clock::time_point timeStamp, std::error_code error = std::error_code()) -> void;
+
+	/// @name Virtual Overrides for skill::Element
+	/// @{
+
+	auto load(utils::json::decoder::Object &jsonObject, config::Context &context) -> void final;
+
+	/// @}
 
 	/// @brief The client this transaction belongs to
 	std::reference_wrapper<TemplateClient> _client;

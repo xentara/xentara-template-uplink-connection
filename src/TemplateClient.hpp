@@ -127,16 +127,6 @@ public:
 	
 	/// @}
 
-protected:
-	/// @name Virtual Overrides for skill::Element
-	/// @{
-
-	auto load(utils::json::decoder::Object &jsonObject,
-		config::Resolver &resolver,
-		const config::FallbackHandler &fallbackHandler) -> void final;
-
-	/// @}
-
 private:
 	/// @brief This structure represents the current state of the client
 	struct State
@@ -201,6 +191,13 @@ private:
 
 	/// @brief Checks whether an error is the result of a lost connection
 	static auto isConnectionError(std::error_code error) noexcept -> bool;
+
+	/// @name Virtual Overrides for skill::Element
+	/// @{
+
+	auto load(utils::json::decoder::Object &jsonObject, config::Context &context) -> void final;
+
+	/// @}
 
 	/// @brief A Xentara event that is raised when the connection is established
 	process::Event _connectedEvent;

@@ -14,7 +14,7 @@ namespace xentara::plugins::templateUplink
 	
 using namespace std::literals;
 
-auto TemplateRecord::load(utils::json::decoder::Value &value, config::Resolver &resolver) -> void
+auto TemplateRecord::load(utils::json::decoder::Value &value, config::Context &context) -> void
 {
 	// Interpret the value as an object
 	auto jsonObject = value.asObject();
@@ -27,7 +27,7 @@ auto TemplateRecord::load(utils::json::decoder::Value &value, config::Resolver &
 		if (name == "dataPoint"sv)
 		{
 			// Resolve the data point
-			resolver.submit<model::Element>(value, std::ref(_dataPoint));
+			context.resolve<model::Element>(value, std::ref(_dataPoint));
 			dataPointLoaded = true;
 		}
 		/// @todo use something specific to the key used by the remote service, like e.g. "objectName"

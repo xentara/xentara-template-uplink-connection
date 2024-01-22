@@ -1,7 +1,7 @@
 // Copyright (c) embedded ocean GmbH
 #pragma once
 
-#include <xentara/config/Resolver.hpp>
+#include <xentara/config/Context.hpp>
 #include <xentara/data/ReadHandle.hpp>
 #include <xentara/model/Element.hpp>
 #include <xentara/utils/core/RawDataBlock.hpp>
@@ -20,7 +20,7 @@ class TemplateRecord final
 {
 public:
 	/// @brief Loads the record from a JSON value
-	auto load(utils::json::decoder::Value &value, config::Resolver &resolver) -> void;
+	auto load(utils::json::decoder::Value &value, config::Context &context) -> void;
 
 	/// @brief Collects the data from the record and appends it to a data block
 	auto collect(std::chrono::system_clock::time_point timeStamp, utils::core::RawDataBlock &data) const -> void;

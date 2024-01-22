@@ -5,7 +5,7 @@
 #include "Events.hpp"
 #include "Tasks.hpp"
 
-#include <xentara/config/FallbackHandler.hpp>
+#include <xentara/config/Errors.hpp>
 #include <xentara/data/DataType.hpp>
 #include <xentara/data/ReadHandle.hpp>
 #include <xentara/data/WriteHandle.hpp>
@@ -27,9 +27,7 @@ namespace xentara::plugins::templateUplink
 	
 using namespace std::literals;
 
-auto TemplateTransaction::load(utils::json::decoder::Object &jsonObject,
-	config::Resolver &resolver,
-	const config::FallbackHandler &fallbackHandler) -> void
+auto TemplateTransaction::load(utils::json::decoder::Object &jsonObject, config::Context &context) -> void
 {
 	// Go through all the members of the JSON object that represents this object
 	for (auto && [name, value] : jsonObject)
@@ -43,7 +41,7 @@ auto TemplateTransaction::load(utils::json::decoder::Object &jsonObject,
 				// Add a record
 				_records.emplace_front();
 				// Load it
-				_records.front().load(element, resolver);
+				_records.front().load(element, context);
 			}
 		}
 		/// @todo load custom configuration parameters
@@ -63,9 +61,7 @@ auto TemplateTransaction::load(utils::json::decoder::Object &jsonObject,
 		}
 		else
 		{
-			// Pass any unknown parameters on to the fallback handler, which will load the built-in parameters ("id", "uuid", and "children"),
-			// and throw an exception if the key is unknown
-            fallbackHandler(name, value);
+            config::throwUnknownParameterError(name);
 		}
     }
 
