@@ -2,10 +2,10 @@
 #include "TemplateRecord.hpp"
 
 #include <xentara/utils/json/decoder/Object.hpp>
-#include <xentara/utils/string/cat.hpp>
 #include <xentara/config/Errors.hpp>
 #include <xentara/data/Quality.hpp>
 
+#include <format>
 #include <string_view>
 #include <stdexcept>
 
@@ -112,7 +112,7 @@ auto TemplateRecord::resolveHandles() -> void
 		if (auto error = _valueReadHandle.hardError())
 		{
 			throw std::system_error(
-				error, utils::string::cat("could not construct read handle for the value of ", dataPoint->primaryKey(), " for template transaction record"));
+				error, std::format("could not construct read handle for the value of {} for template transaction record", *dataPoint));
 		}
 
 		// Get the quality read handle
@@ -121,7 +121,7 @@ auto TemplateRecord::resolveHandles() -> void
 		if (auto error = _qualityReadHandle.hardError())
 		{
 			throw std::system_error(error,
-				utils::string::cat("could not construct read handle for the quality of ", dataPoint->primaryKey(), " for template transaction record"));
+				std::format("could not construct read handle for the quality of {} for template transaction record", *dataPoint));
 		}
 
 		/// @todo resolve read handles for other attributes that should be sent
