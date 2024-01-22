@@ -29,7 +29,9 @@ public:
 	/// @brief The class object containing meta-information about this element type
 	/// @todo change class name
 	/// @todo assign a unique UUID
-	using Class = ConcreteClass<"TemplateClient", "deadbeef-dead-beef-dead-beefdeadbeef"_uuid>;
+	/// @todo change display name
+	using Class =
+		ConcreteClass<"TemplateClient", "deadbeef-dead-beef-dead-beefdeadbeef"_uuid, "template uplink client">;
 
 	/// @brief A handle used to access the client
 	/// @todo implement a proper handle
