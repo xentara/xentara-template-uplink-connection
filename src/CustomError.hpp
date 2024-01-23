@@ -11,7 +11,7 @@ namespace xentara::plugins::templateUplink
 /// @todo Add error codes for other custom errors
 enum class CustomError
 {
-	/// @brief The base value for custom errors, so they don't overlap with system errors
+	/// @brief No error has occurred. This has the value 0 to conform to the conventions of std::error_code.
 	NoError = 0,
 
 	/// @brief The device connection is not open.
