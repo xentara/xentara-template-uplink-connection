@@ -36,14 +36,8 @@ inline auto make_error_code(CustomError error) noexcept -> std::error_code
 
 } // namespace xentara::plugins::templateUplink
 
-/// @brief Template specialization for use with the standard C++ library
-namespace std
-{
-
 /// @brief This specialization enables automatic conversion from xentara::plugins::templateUplink::CustomError to std::error_code.
 template<>
-struct is_error_code_enum<xentara::plugins::templateUplink::CustomError> : public std::true_type
+struct std::is_error_code_enum<xentara::plugins::templateUplink::CustomError> : public std::true_type
 {
 };
-
-}
