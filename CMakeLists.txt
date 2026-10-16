@@ -85,12 +85,10 @@ if(Doxygen_FOUND)
 		set(DOXYGEN_SHORT_NAMES YES)
 	endif()
 
-	# Get the location of the tag files for the Xentara documentation
-	get_target_property(xentara_utils_tag_file Xentara::xentara-utils XENTARA_DOXYGEN_TAG_FILE)
-	get_target_property(xentara_plugin_tag_file Xentara::xentara-plugin XENTARA_DOXYGEN_TAG_FILE)
+	# Add the tag files for the Xentara documentation
 	set(DOXYGEN_TAGFILES
-		"${xentara_utils_tag_file}=https://docs.xentara.io/xentara-utils"
-		"${xentara_plugin_tag_file}=https://docs.xentara.io/xentara-plugin"
+		"${XentaraUtils_DOXYGEN_TAG_FILE}=https://docs.xentara.io/xentara-utils"
+		"${XentaraPlugin_DOXYGEN_TAG_FILE}=https://docs.xentara.io/xentara-plugin"
 	)
 
 	# Add a target to generate the Doxygen documentation
