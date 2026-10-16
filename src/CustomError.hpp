@@ -7,7 +7,7 @@
 namespace xentara::plugins::templateUplink
 {
 
-/// @brief Custom error codes used by the driver
+/// @brief Custom error codes used by the uplink
 /// @todo Add error codes for other custom errors
 enum class CustomError
 {
